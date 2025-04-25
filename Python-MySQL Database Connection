@@ -1,0 +1,24 @@
+"""
+Filename: python_mysql_to_csv_export.py
+Project: creating a connection between Python and MySQL database
+Description:
+    This script connects to a MySQL database using SQLAlchemy and PyMySQL,
+    fetches data from the 'layoffs_staging2' table,
+    and exports it to a local CSV file named 'layoffs_staging2.csv'.
+"""
+
+import pandas as pd
+from sqlalchemy import create_engine
+import urllib.parse
+
+# Encode password
+encoded_password = urllib.parse.quote_plus('my_password')
+
+# Create engine with inline credentials
+engine = create_engine(f"mysql+pymysql://root:{encoded_password}@localhost/world_layoffs")
+
+# Query the correct table
+df = pd.read_sql("SELECT * FROM layoffs_staging2", engine)
+
+# Save to CSV
+df.to_csv('layoffs_staging2.csv', index=False)
